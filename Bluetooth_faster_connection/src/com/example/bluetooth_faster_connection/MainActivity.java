@@ -147,8 +147,10 @@ public class MainActivity extends Activity {
         // If BT is not on, request that it be enabled.
         // setupMessage() will then be called during onActivityResult
         if (!mBluetoothAdapter.isEnabled()) {
-            Intent enableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_ENABLE);
-            startActivityForResult(enableIntent, REQUEST_ENABLE_BT);
+            Intent enableDiscoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
+            enableDiscoverableIntent.putExtra(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE, 0);
+            startActivity(enableDiscoverableIntent);
+//            startActivityForResult(enableDiscoverableIntent, REQUEST_ENABLE_BT);
         // Otherwise, setup the Message session
         } else {
             if (mMessageService == null) setupMessage();
@@ -235,7 +237,7 @@ public class MainActivity extends Activity {
         if (mBluetoothAdapter.getScanMode() !=
             BluetoothAdapter.SCAN_MODE_CONNECTABLE_DISCOVERABLE) {
             Intent discoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 300);
+            discoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
             startActivity(discoverableIntent);
         }
     }
