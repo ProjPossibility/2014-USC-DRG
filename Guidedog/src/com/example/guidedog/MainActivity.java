@@ -3,8 +3,12 @@ package com.example.guidedog;
  
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.example.guidedog.R;
 import com.example.guidedog.R.layout;
+import com.example.httpasyncpost.JSONUtil;
 import com.example.httpasyncpost.ServerRestClientUsage;
 
 import android.net.DhcpInfo;
