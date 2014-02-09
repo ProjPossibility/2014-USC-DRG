@@ -3,8 +3,13 @@ package com.example.guidedog;
  
 import java.util.HashMap;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import com.example.guidedog.R;
 import com.example.guidedog.R.layout;
+import com.example.httpasyncpost.JSONUtil;
+import com.example.httpasyncpost.ServerRestClientUsage;
 
 import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
@@ -28,15 +33,13 @@ public class MainActivity extends Activity implements AccelerometerListener{
 	    TextView info;
 	    DhcpInfo d;
 	    public WifiManager wifii;
- 
-	
 	
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         wifii= (WifiManager)getSystemService(Context.WIFI_SERVICE);
-	    WifiInfo wInfo = wifii.getConnectionInfo();
+		WifiInfo wInfo = wifii.getConnectionInfo();
 	       
          
         // Check onResume Method to start accelerometer listener
@@ -47,7 +50,7 @@ public class MainActivity extends Activity implements AccelerometerListener{
     	
          
     }
-    public void sendmessage(){
+    public HashMap<String, String> sendmessage(){
     	 d=wifii.getDhcpInfo();
 	        s_dns1=String.valueOf(d.dns1);
 	        s_dns2=String.valueOf(d.dns2);    
@@ -56,7 +59,7 @@ public class MainActivity extends Activity implements AccelerometerListener{
 	        s_leaseDuration=String.valueOf(d.leaseDuration);     
 	        s_netmask=String.valueOf(d.netmask);    
          s_serverAddress=String.valueOf(d.serverAddress);
-    	 HashMap hashmap = new HashMap<String,String>();
+    	 HashMap<String, String> hashmap = new HashMap<String,String>();
          hashmap.put("DNS 1", s_dns1);
          hashmap.put("DNS 2", s_dns2);
          hashmap.put("Default Gateway", s_gateway);
@@ -64,12 +67,9 @@ public class MainActivity extends Activity implements AccelerometerListener{
          hashmap.put("lease Time", s_leaseDuration);
          hashmap.put("Subnet Mask", s_netmask);
          hashmap.put("Server IP:", s_serverAddress);
-         TextView tv=new TextView(this);
- 		
- 	    tv.setText("Network Info\n"+s_dns1+"\n"+s_dns2+"\n"+s_gateway+"\n"+s_ipAddress+"\n"+s_leaseDuration+"\n"+s_netmask+"\n"+s_serverAddress);
- 	    setContentView(tv);
-    	
-    	
+         hashmap.put("mac_address", "1111111");
+         hashmap.put("shake_date", "00000");
+         return hashmap;
     }
     
     public void vibrate(int duration)
@@ -82,18 +82,19 @@ public class MainActivity extends Activity implements AccelerometerListener{
          
         // Do your stuff here
     	
-      sendmessage();
+      
     	//vibrate(1000);
 
         // vibrate(10);
         // Called when Motion Detected
       //  Toast.makeText(getBaseContext(), "Motion detected", 
       //          Toast.LENGTH_SHORT).show();
-       
-           
-           
-        
-         
+      HashMap<String, String> map =  sendmessage();
+      ServerRestClientUsage server = new ServerRestClientUsage();
+      server.getPairedPhone(map, this);     
+//      String response = server.responseMessage;
+      
+//      Toast.makeText(this, "Hello", Toast.LENGTH_LONG).show();
     }
  
     
@@ -146,5 +147,10 @@ public class MainActivity extends Activity implements AccelerometerListener{
         }
              
     }
+
+	public void getResponseMessage(String response) {
+		// TODO Auto-generated method stub
+		Toast.makeText(this, response, Toast.LENGTH_SHORT).show();
+	}
  
 }
