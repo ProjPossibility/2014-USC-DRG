@@ -17,6 +17,9 @@
 package com.example.bluetooth_faster_connection;
 
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -27,7 +30,6 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.os.Vibrator;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -38,7 +40,6 @@ import android.view.View.OnClickListener;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -90,6 +91,9 @@ public class MainActivity extends Activity {
     private BluetoothMessageService mMessageService = null;
 
     private int mBluetoothUpdateCounter = 0;
+    private Timer timer;
+    private TimerTask mTimerTask;
+    private int mBluetoothRssi = 0;
 
 
     @Override
@@ -441,9 +445,31 @@ public class MainActivity extends Activity {
 	        			if( mBluetoothUpdateCounter >100 | mBluetoothUpdateCounter < 0 ){
 	        				mBluetoothUpdateCounter = 0;
 	        			}
+
 	        			mInfo.setText("Name:"+name +"\nAddress:" + address +"\nRSSI:"+ rssi+"\nCounter:"+mBluetoothUpdateCounter);
+	        			setRssi(rssi);
+	        			if(timer == null){
+	        				int seconds = 1;
+	        				timer = new Timer();
+	        				timer.schedule(new UpdateTask(),1, seconds*1000);
+	        			}
 	        		}
 		        }
 	    }
 	 };
+
+     class UpdateTask extends TimerTask {
+         public void run() {
+        	 int rssi = getRssi();
+             System.out.println("Timer updated rssi is :" + rssi);
+         }
+     }
+     
+     private void setRssi(int in){
+    	 mBluetoothRssi = in;
+     }
+
+     private int getRssi(){
+    	 return mBluetoothRssi;
+     }
 }

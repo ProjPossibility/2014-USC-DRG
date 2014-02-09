@@ -16,6 +16,9 @@
 
 package com.example.bluetooth_faster_connection;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -76,9 +79,9 @@ public class DeviceDicoverService extends Service {
          
         //start scanning
         doDiscovery();
+        
     }
 
-    
     // The BroadcastReceiver that listens for discovered devices and
     // changes the title when discovery is finished
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
@@ -108,9 +111,9 @@ public class DeviceDicoverService extends Service {
                 		}*/
                 		if (device.getName().equals(MainActivity.Target)){
                 			Log.v(TAG,"Get target phone");
-                			if (mBtAdapter.isDiscovering()) {
+                			/*if (mBtAdapter.isDiscovering()) {
                 	            mBtAdapter.cancelDiscovery();
-                	        }
+                	        }*/
                 			//mBtAdapter.startDiscovery();
                 		}
                 	}
@@ -165,8 +168,9 @@ public class DeviceDicoverService extends Service {
         //this.setResult(Activity.RESULT_OK, intent);
         sendBroadcast(intent);
         if (D) Log.d(TAG, "SendDeviceInfo broadcast sent.");
+        
    }
-    
+
     @Override
 	public void onDestroy() {
         super.onDestroy();
