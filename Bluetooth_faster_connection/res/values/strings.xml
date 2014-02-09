@@ -15,7 +15,7 @@
 -->
 
 <resources>
-    <string name="app_name">Keep Scanning</string>
+    <string name="app_name">Guide Dog</string>
 
     <!--  BluetoothChat -->
     <string name="send">Send</string>
