@@ -111,9 +111,9 @@ public class DeviceDicoverService extends Service {
                 		}*/
                 		if (device.getName().equals(MainActivity.Target)){
                 			Log.v(TAG,"Get target phone");
-                			/*if (mBtAdapter.isDiscovering()) {
+                			if (mBtAdapter.isDiscovering()) {
                 	            mBtAdapter.cancelDiscovery();
-                	        }*/
+                	        }
                 			//mBtAdapter.startDiscovery();
                 		}
                 	}
