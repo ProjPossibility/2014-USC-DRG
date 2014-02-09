@@ -139,8 +139,7 @@ public class MainActivity extends Activity implements AccelerometerListener {
 
 		Button mButton = (Button) findViewById(R.id.myButton);
 		mButton.setOnClickListener(new OnClickListener() {
-
->>>>>>> 3627f68e27f64f6e2ce3c8a2a6b91872df362e42
+			
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
@@ -633,5 +632,5 @@ public class MainActivity extends Activity implements AccelerometerListener {
 			e.printStackTrace();
 		}
 	}
->>>>>>> 3627f68e27f64f6e2ce3c8a2a6b91872df362e42
+
 }
