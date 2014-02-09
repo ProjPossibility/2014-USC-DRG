@@ -30,6 +30,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -94,6 +95,13 @@ public class MainActivity extends Activity {
     private Timer timer;
     private TimerTask mTimerTask;
     private int mBluetoothRssi = 0;
+    
+    // rssi global variable
+    private int tempRssi1 = 0;
+    private int tempRssi2 = 0;
+    private int tempRssi3 = 0;
+    private int tempRssi4 = 0;
+    private double average;
 
 
     @Override
@@ -461,10 +469,54 @@ public class MainActivity extends Activity {
 	 };
 
      class UpdateTask extends TimerTask {
+    	 
          public void run() {
         	 int rssi = getRssi();
+        	 
+        	 storeRssi();
+        	 calculate();
              System.out.println("Timer updated rssi is :" + rssi);
+             System.out.println("Rssi1 :" + tempRssi1);
+             System.out.println("Rssi2 :" + tempRssi2);
+             System.out.println("Rssi3 :" + tempRssi3);
+             System.out.println("Rssi4 :" + tempRssi4);
+             System.out.println("average :" + average);
+             
+             if (rssi > -50)
+             {
+            	 vibrate(1000);
+             }
+             
+             else if (rssi <= -50 && rssi > -60)
+             {
+            	 long [] pattern = {0,600,1000};
+            	 vibrate(pattern, 0);
+             }
+             
+             else if (rssi <= -60 && rssi > 80)
+             {
+            	 long [] pattern = {0,1200,1000};
+            	 vibrate(pattern, 0);
+             }
+             
          }
+     }
+     
+     public void storeRssi(){
+    	 tempRssi4 = tempRssi3;
+    	 tempRssi3 = tempRssi2;
+    	 tempRssi2 = tempRssi1;
+    	 tempRssi1 = getRssi();
+    	 
+    	 
+     }
+     
+     public void calculate(){
+    	 double diff1 = tempRssi1 - tempRssi2;
+    	 double diff2 = tempRssi2 - tempRssi3;
+    	 double diff3 = tempRssi3 - tempRssi4;
+    	 average = (diff1 + diff2 + diff3)/3.0;
+    	 
      }
      
      private void setRssi(int in){
@@ -474,4 +526,17 @@ public class MainActivity extends Activity {
      private int getRssi(){
     	 return mBluetoothRssi;
      }
+     
+     public void vibrate(int duration)
+     {
+        Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+        v.vibrate(duration);    
+     }
+     
+     public void vibrate(long[] pattern, int repeat)
+     {
+     	Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+     	v.vibrate(pattern, repeat);
+     }
+     
 }
