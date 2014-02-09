@@ -139,7 +139,7 @@ public class MainActivity extends Activity implements AccelerometerListener {
 
 		Button mButton = (Button) findViewById(R.id.myButton);
 		mButton.setOnClickListener(new OnClickListener() {
-			
+
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
