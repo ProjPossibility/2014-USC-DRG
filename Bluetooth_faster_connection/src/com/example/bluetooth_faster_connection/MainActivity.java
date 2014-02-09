@@ -557,8 +557,33 @@ public class MainActivity extends Activity implements AccelerometerListener {
 		public void run() {
 			int rssi = getRssi();
 			System.out.println("Timer updated rssi is :" + rssi);
+			
+			if (rssi > -50)
+			{
+				vibrate(1000);
+			}
+			
+			else if (rssi <= -50 && rssi > -60)
+			{
+				long[] pattern = {0, 1000, 2000};
+				vibrate(pattern, 0);
+			}
+			
+			else if (rssi <= -60 && rssi > -80)
+			{
+				long[] pattern = {0, 2000, 2000};
+				vibrate(pattern, 0);
+			}
 		}
 	}
+	
+	public void vibrate(long[] pattern, int repeat)
+    {
+    	Vibrator v = (Vibrator)getSystemService(Context.VIBRATOR_SERVICE);
+    	v.vibrate(pattern, repeat);
+    }
+	
+	
 
 	private void setRssi(int in) {
 		mBluetoothRssi = in;
