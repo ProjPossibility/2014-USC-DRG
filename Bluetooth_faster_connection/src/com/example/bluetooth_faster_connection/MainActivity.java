@@ -152,7 +152,7 @@ public class MainActivity extends Activity {
         // setupMessage() will then be called during onActivityResult
         if (!mBluetoothAdapter.isEnabled()) {
             Intent enableDiscoverableIntent = new Intent(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE);
-            enableDiscoverableIntent.putExtra(BluetoothAdapter.ACTION_REQUEST_DISCOVERABLE, 0);
+            enableDiscoverableIntent.putExtra(BluetoothAdapter.EXTRA_DISCOVERABLE_DURATION, 0);
             startActivity(enableDiscoverableIntent);
 //            startActivityForResult(enableDiscoverableIntent, REQUEST_ENABLE_BT);
         // Otherwise, setup the Message session
