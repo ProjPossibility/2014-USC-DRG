@@ -286,6 +286,8 @@ public class MainActivity extends Activity implements AccelerometerListener {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		timer.cancel();
+		cancel();
 
 		// Check device supported Accelerometer senssor or not
 		if (AccelerometerManager.isListening()) {
@@ -560,19 +562,24 @@ public class MainActivity extends Activity implements AccelerometerListener {
 			
 			if (rssi > -50)
 			{
-				vibrate(1000);
+				vibrate(500);
 			}
 			
 			else if (rssi <= -50 && rssi > -60)
 			{
-				long[] pattern = {0, 1000, 2000};
+				long[] pattern = {0, 200, 300};
 				vibrate(pattern, 0);
 			}
 			
 			else if (rssi <= -60 && rssi > -80)
 			{
-				long[] pattern = {0, 2000, 2000};
+				long[] pattern = {0, 50, 450};
 				vibrate(pattern, 0);
+				
+			}
+			else
+			{
+				cancel();
 			}
 		}
 	}
@@ -622,6 +629,11 @@ public class MainActivity extends Activity implements AccelerometerListener {
 	public void vibrate(int duration) {
 		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		v.vibrate(duration);
+	}
+	
+	public void cancel(){
+		Vibrator v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+		v.cancel();
 	}
 
 	public HashMap<String, String> sendmessage() {
